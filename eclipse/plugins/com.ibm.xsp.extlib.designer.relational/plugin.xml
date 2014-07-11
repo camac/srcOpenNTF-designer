@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+ <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="com.ibm.xsp.extlib.designer.relational.actionSet"
+            label="%relational.actionset"
+            visible="true">
+            
+         <menu
+               id="com.ibm.rcp.ui.toolsmenu"
+               label="%tools.menu" 
+               path="navigate"> 
+                    <separator name="slot1"/>
+                    <separator name="slot2"/>
+                    <separator name="slot3"/>
+                    <separator name="slot4"/>
+                    <separator name="additions"/>
+                    <separator name="relational"/>
+         </menu> 
+            
+         <action
+                id="com.ibm.xsp.extlib.designer.relational.jdbc.plugin.wizard.menu"
+                class="com.ibm.xsp.extlib.designer.relational.jdbc.plugin.wizard.JdbcPluginMenuHandler"
+                label="%jdbc.driver.plugin.wizard"
+                menubarPath="com.ibm.rcp.ui.toolsmenu/relational"/>
+      </actionSet>
+   </extension>
+   
+   
+ </plugin>
