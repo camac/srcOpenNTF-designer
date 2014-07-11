@@ -16,6 +16,7 @@
 package com.ibm.xsp.extlib.designer.common.properties;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.ibm.commons.iloader.node.lookups.api.AbstractLookup;
 import com.ibm.commons.iloader.node.lookups.api.ILookup;
@@ -46,11 +47,14 @@ public class AppThemeLookup extends AbstractLookup {
         }
     };
 
+    private List<ThemeLookupEntry> contributedThemes = null;
+    
     public AppThemeLookup(DesignerProject prj, String[] codes, String[] labels) {
         this.startCodes = codes;
         this.startLabels = labels;
         themeLookup = DesignerDELookup.getThemesLookup(prj);
         themeLookup.addLookupListener(ourListener);
+        contributedThemes = ThemeLookupEntryContributions.getThemeLookupEntries();
     }
     
     // be sure to call this when the user of this lookup goes away
@@ -59,31 +63,38 @@ public class AppThemeLookup extends AbstractLookup {
     }
     
     public int size() {
-        return (startCodes.length + themeLookup.size());
+    	return (startCodes.length + themeLookup.size() + contributedThemes.size());
     }
     
     public String getCode(int index) {
-        if(index >= size()) {
+    	if(index >= size()) {
             return ""; //$NON-NLS-1$
         }
         else if (index < startCodes.length) {
             return startCodes[index];
+        } else if (index < startCodes.length + themeLookup.size()) {
+            index -= startCodes.length;
+            // don't want the slash in this context
+            String themeLabel = themeLookup.getLabel(index);
+            return themeLabel.concat(".theme"); // need to store with extension $NON-NLS-1$        	
         }
-        index -= startCodes.length;
-        // don't want the slash in this context
-        String themeLabel = themeLookup.getLabel(index);
-        return themeLabel.concat(".theme"); // need to store with extension $NON-NLS-1$
+        
+        index -= (startCodes.length + themeLookup.size());
+        return contributedThemes.get(index).getCode();
     }
     
     public String getLabel(int index) {
-        if(index >= size()) {
+    	if(index >= size()) {
             return ""; //$NON-NLS-1$
         }
         else if (index < startCodes.length) {
             return startLabels[index];
+        } else if (index < startCodes.length + themeLookup.size()) {
+        	index -= startCodes.length;
+        	return themeLookup.getLabel(index);
         }
-        index -= startCodes.length;
-        return themeLookup.getLabel(index);
+        index -= (startCodes.length + themeLookup.size());
+        return contributedThemes.get(index).getLabel();
     }
     
     public void update() {

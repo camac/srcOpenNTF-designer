@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="com.ibm.xsp.extlib.designer.themeLookupEntryProvider" name="Xsp Properties Designer ThemeLookupEntryProvider" schema="schema/com.ibm.xsp.extlib.designer.themeLookupEntryProvider.exsd"/>
+
+</plugin>
